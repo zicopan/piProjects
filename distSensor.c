@@ -8,17 +8,16 @@
 #define timeOut MAX_DISTANCE*60 // calculate timeout according to the maximum measured distance
 #define ledPin 0                // define the LED
 
-// from FreeNove #url: 
 int pulseIn(int pin, int level, int timeout);
 float getSonar(){   
     // get the measurement results of ultrasonic module in units of cm
     long pingTime;
     float distance;
-    digitalWrite(trigPin,HIGH); //trigPin send 10us high level 
+    digitalWrite(trigPin,HIGH); //trigPin high level 
     delayMicroseconds(10);
     digitalWrite(trigPin,LOW);
-    pingTime = pulseIn(echoPin,HIGH,timeOut);   //read plus time of echoPin
-    distance = (float)pingTime * 340.0 / 2.0 / 10000.0; // since the sound speed is 340m/s
+    pingTime = pulseIn(echoPin,HIGH,timeOut);
+    distance = (float)pingTime * 340.0 / 2.0 / 10000.0; // since the speed of sound is 340m/s
     return distance;
 }
 // Program Start
@@ -34,18 +33,20 @@ int main(){
     while(1){
         distance = getSonar();
         if(distance < 2){
-			printf("Someone (or something?) is behind you!\n");
-			printf("%.1f m\n",distance/100);
-			printf("LED on\n\n");
-			digitalWrite(ledPin, HIGH);
-			}
-		else{digitalWrite(ledPin, LOW);}
+		printf("Someone (or something?) is behind you!\n");
+		printf("%.1f m\n",distance/100);
+		printf("LED on\n\n");
+		digitalWrite(ledPin, HIGH);
+		}
+		else{
+			digitalWrite(ledPin, LOW);
+		}
         delay(1000);
     }   
     return 1;
 }
 
-// from FreeNove #url: 
+// from FreeNove #url: https://github.com/Freenove
 int pulseIn(int pin, int level, int timeout)
 {
    struct timeval tn, t0, t1;
